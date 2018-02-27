@@ -1,0 +1,46 @@
+.{
+	margin: 0;
+	padding: 0;
+}
+.container{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+.u-box{
+	display: flex;
+	width: 250px;
+	height: 350px;
+	flex-direction: column;
+	border: 2px solid #000;
+	text-align: center;
+	justify-content: flex-end;
+	line-height: 280px;
+	font-size: 60px;
+	margin-right: 55px;
+	box-shadow: 8px 6px 4px #888;
+	-moz-box-shadow: 8px 6px 4px #888;
+	position: relative;
+}
+
+.u-box-bottom{
+	width: 250px;
+	height: 70px;
+	border-top: 2px solid #000;
+	line-height: 70px;
+	font-size: 40px;
+}
+
+.top, .bottom{
+	display: flex;
+	flex-direction: row;
+}
+.top{
+	width: 810px;
+	margin: 0 auto;
+}
+.bottom{
+	width: 540px;
+	margin: 0 auto;
+	margin-top: 20px;
+}

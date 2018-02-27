@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/worksystem.css" />
+		<script src="js/myjs.js"></script>
+		<script>
+
+            _ajax({
+                method:"post",
+                url:"user.php",
+                data:{
+                    act:"checkwork",
+                },
+                type:"json",
+                success:function (data) {
+                    var classed = "";
+                    if (data.status==200){
+                        _(".work").innerHTML=data.workinfo;
+                        for(var i=0;i<data.classes.length;i++){
+                            _(".classes").innerHTML+='<input type="radio" name="type" style="margin-left: 20px" value="'+data.classes[i]+'">'+data.classes[i];
+                        }
+                        for(var i=j=0;j<data.classesed.length;j++){
+                            classed += data.classesed[j]+" &nbsp;&nbsp;&nbsp;";
+                        }
+                        _(".submited").innerHTML=data.classesed;
+
+                    }else {
+                        alert("未知错误");
+                    }
+                }
+            });
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="work-info">
+				<div class="info-tittle">
+					作业详情
+				</div>
+				<div class="work" id="work"></div>
+			</div>
+			<div class="submit">
+				<div class="submit-top">
+			请选择要提交的课目
+			<div style="margin-left: 100px;"><form id="classes"></form></div>
+		</div>
+			<div class="submit-content" id="file">
+				请将文件拖拽到此区域
+			</div>
+		</div>
+
+			<div class="submited_class">我已交的作业<div id="submited"></div></div>
+		</div>
+		<script>
+
+            _(".file").ondragenter = function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.style.backgroundColor="gray";
+            };
+            _(".file").ondragover = function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.style.backgroundColor="gray";
+                this.innerText="松开鼠标上传";
+            };
+            _(".file").ondragleave = function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.style.backgroundColor="mediumpurple";
+            };
+            _(".file").ondrop = function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.style.backgroundColor="mediumpurple";
+                upload(e.dataTransfer.files);
+            };
+            function upload(oFile){
+                var xhr = new XMLHttpRequest();
+                //定义表单变量
+                var file = oFile;
+                //新建一个FormData对象
+                var formData = new FormData(_(".classes"));
+                //追加文件数据
+                for(i=0;i<file.length;i++){
+                    formData.append("file", file[i]);
+                }
+                //post方式
+                xhr.open('POST', "upload.php");
+                //发送请求
+                xhr.send(formData);
+                //success回调
+                xhr.onreadystatechange = function(){
+                    if ( xhr.readyState == 4 && xhr.status == 200 ) {
+//                        console.log(xhr.responseText);
+                        var oData = eval('(' + xhr.responseText + ')');
+//                        console.log(oData);
+                        if (oData.status==200){
+                            alert("上传成功");
+                        }else if(oData.status==404){
+                            alert("请选择课程");
+						}else {
+                            alert("未知错误，请重试");
+                        }
+                    }
+                };
+                //设置超时时间
+                xhr.timeout = 100000;
+                xhr.ontimeout = function(event){}
+            };
+		</script>
+	</body>
+</html>

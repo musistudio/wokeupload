@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/user.css" />
+		<script type="text/javascript" src="js/myjs.js" ></script>
+	</head>
+	<body>
+		<div class="container">
+			
+			<div class="top">
+				
+				<div class="u-box">
+					姓&nbsp;&nbsp;&nbsp;名
+					<div class="u-box-bottom" id="name">
+					</div>
+				</div>
+				
+
+				<div class="u-box">
+					学&nbsp;&nbsp;&nbsp;号
+					<div class="u-box-bottom" id="number">
+
+					</div>
+				</div>
+				
+
+				<div class="u-box">
+					性&nbsp;&nbsp;&nbsp;别
+					<div class="u-box-bottom" id="sex">
+
+					</div>
+				</div>
+				</div>
+
+			
+			
+			<div class="bottom">
+
+				<div class="u-box">
+					密&nbsp;&nbsp;&nbsp;码
+					<div class="u-box-bottom" id="password" style="font-size: 20px">
+
+					</div>
+				</div>
+				
+
+				<div class="u-box">
+					邮&nbsp;&nbsp;&nbsp;箱
+					<div class="u-box-bottom" id="email" style="font-size: 20px">
+
+					</div>
+			</div>
+			</div>
+		</div>
+		
+		<script>
+			var email;
+
+			var len = _("#u-box").length;
+			function checkTime (num) {
+				if (num<10) {
+					return "0"+num;
+				}else{
+					return num;
+				}
+			}
+			function changeBg () {
+                var now = new Date();
+                var m = now.getMinutes();
+                var s = now.getSeconds();
+				for (var i=0;i<5;i++) {
+					_( "#u-box")[i].style.backgroundColor="#" +checkTime(parseInt(Math.random()*100))+checkTime(m)+checkTime(s);
+                    _( "#u-box")[i].style.color="#"+checkTime(m)+checkTime(parseInt(Math.random()*100))+checkTime(s);
+				};
+				setTimeout("changeBg()",1000);
+			}
+			window.onload = changeBg();
+			_ajax({
+				method:"post",
+				url:"user.php",
+				data:{
+				    act:"checkinfo"
+				},
+				type:"json",
+				success:function (data) {
+					_(".name").innerText = data.name;
+                    _(".number").innerText = data.number;
+                    _(".sex").innerText = data.sex;
+                    _(".password").innerText = "xxxxxxxx";
+                    _(".email").innerText = data.email;
+                    email=data.email;
+                }
+			});
+			_("#u-box")[3].onmouseover = function () {
+				_(".password").innerHTML="<input type=\"password\" id=\"newpassword\" name=\"newpassword\" placeholder=\"请输入新密码\">";
+				_(".newpassword").focus();
+            };
+            _("#u-box")[3].onmouseout = function () {
+                if (_(".newpassword").value != ""){
+                    _ajax({
+                        method:"post",
+                        url:"user.php",
+                        data:{
+                            act:"changepwd",
+							newpwd:_(".newpassword").value
+                        },
+                        type:"json",
+                        success:function (data) {
+                           if(data.status==200){
+                               alert("密码修改成功！");
+						   }else {
+                               alert("密码修改失败");
+						   }
+                        }
+                    })
+				}
+                _(".password").innerHTML="xxxxxxxx";
+            }
+            _("#u-box")[4].onmouseover = function () {
+                _(".email").innerHTML="<input type=\"text\" id=\"newemail\" name=\"newemail\" placeholder=\"请输入新邮箱\">";
+                _(".newemail").focus();
+            };
+            _("#u-box")[4].onmouseout = function () {
+                if (_(".newemail").value != ""){
+                    _ajax({
+                        method:"post",
+                        url:"user.php",
+                        data:{
+                            act:"changeemail",
+							newemail:_(".newemail").value
+                        },
+                        type:"json",
+                        success:function (data) {
+                            if(data.status==200){
+                                alert("邮箱修改成功！");
+                            }else {
+                                alert("邮箱修改失败");
+                            }
+                        }
+                    })
+                }
+                _(".email").innerHTML=email;
+            }
+			
+
+		</script>
+	</body>
+</html>
