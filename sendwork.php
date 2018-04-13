@@ -55,7 +55,7 @@ $mail->SMTPAuth = true;
 //Username to use for SMTP authentication
 $mail->Username = 'jsj1706@foxmail.com';
 //Password to use for SMTP authentication
-$mail->Password = 'tmcxwmntzzyvbhgi';
+$mail->Password = '密码';
 //Set who the message is to be sent from
 $mail->setFrom('jsj1706@foxmail.com', '计算机1706班级作业系统');
 //Set an alternative reply-to address
