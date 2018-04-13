@@ -1,5 +1,5 @@
 <?php
-$con = mysql_connect("localhost","root","1314520wh");
+$con = mysql_connect("localhost","root","root");
 if (!$con)
   {
   die('Could not connect: ' . mysql_error());
